@@ -143,6 +143,9 @@ class SpotifyWebPlayer extends React.PureComponent<Props, State> {
     showSaveIcon: false,
     syncExternalDeviceInterval: 5,
     syncExternalDevice: false,
+    nextCallback: () => undefined,
+    prevCallback: () => undefined,
+    playCallback: () => undefined,
   };
 
   public async componentDidMount() {
@@ -349,9 +352,11 @@ class SpotifyWebPlayer extends React.PureComponent<Props, State> {
 
   private handleClickTogglePlay = async () => {
     const { isActive } = this.state;
+    const { playCallback } = this.props;
 
     try {
       await this.togglePlay(!this.isExternalPlayer && !isActive);
+      playCallback();
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
@@ -360,16 +365,20 @@ class SpotifyWebPlayer extends React.PureComponent<Props, State> {
 
   private handleClickPrevious = async () => {
     try {
+      const { prevCallback } = this.props;
+
       /* istanbul ignore else */
       if (this.isExternalPlayer) {
         const { token } = this.props;
 
         await previous(token);
+        prevCallback();
         this.syncTimeout = window.setTimeout(() => {
           this.syncDevice();
         }, 300);
       } else if (this.player) {
         await this.player.previousTrack();
+        prevCallback();
       }
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -378,17 +387,21 @@ class SpotifyWebPlayer extends React.PureComponent<Props, State> {
   };
 
   private handleClickNext = async () => {
+    const { nextCallback } = this.props;
+
     try {
       /* istanbul ignore else */
       if (this.isExternalPlayer) {
         const { token } = this.props;
 
         await next(token);
+        nextCallback();
         this.syncTimeout = window.setTimeout(() => {
           this.syncDevice();
         }, 300);
       } else if (this.player) {
         await this.player.nextTrack();
+        nextCallback();
       }
     } catch (error) {
       // eslint-disable-next-line no-console

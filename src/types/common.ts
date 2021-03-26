@@ -23,6 +23,9 @@ export interface Props {
   token: string;
   updateSavedStatus?: (fn: (status: boolean) => any) => any;
   uris?: string | string[];
+  playCallback: any;
+  nextCallback: any;
+  prevCallback: any;
 }
 
 export interface State {
