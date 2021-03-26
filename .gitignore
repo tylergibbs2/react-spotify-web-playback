@@ -2,7 +2,6 @@
 .tmp/
 coverage/
 esm/
-lib/
 node_modules/
 reports/
 webpack.stats.json
