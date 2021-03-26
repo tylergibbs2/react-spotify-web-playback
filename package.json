@@ -96,7 +96,8 @@
     "format": "prettier \"**/*.{js,jsx,json,yml,yaml,css,less,scss,ts,tsx,md,graphql,mdx}\" --write",
     "validate": "npm run lint && npm run test:coverage && npm run build && npm run size",
     "size": "size-limit",
-    "prepublishOnly": "npm run validate"
+    "prepublishOnly": "npm run validate",
+    "postinstall": "cd ./node_modules/react-spotify-web-playback && npm install && npm run build:cjs && npm run build:esm"
   },
   "prettier": {
     "jsxBracketSameLine": false,
